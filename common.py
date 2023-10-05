@@ -150,15 +150,20 @@ def search(bi_encoder, corpus_embeddings,
     print("Results (after {:.3f} seconds):".format(end_time - start_time))
     results = []
     for hit in hits:
-        print("\t{:.3f}\t{}".format(hit['score'], passages[hit['corpus_id']]))
+        # print("\t{:.3f}\t{}".format(hit['score'], passages[hit['corpus_id']]))
         results.append(passages[hit['corpus_id']])
     return results, hits
 
 def ranking(hits, query, passages, top_k=10, 
     cross_encoder_name='cross-encoder/ms-marco-MiniLM-L-6-v2'):
+
+    start_time = time.time()
     cross_encoder = CrossEncoder(cross_encoder_name)
     cross_inp = [[query, passages[hit['corpus_id']][1]] for hit in hits]
-    cross_scores = cross_encoder.predict(cross_inp)
+    cross_scores = []
+    for input in cross_inp:
+        cross_scores.append(cross_encoder.predict(input))
+    predict_time = time.time()
 
     # Sort results by the cross-encoder scores
     for idx in range(len(cross_scores)):
@@ -166,7 +171,11 @@ def ranking(hits, query, passages, top_k=10,
 
     results = []
     hits = sorted(hits, key=lambda x: x['cross-score'], reverse=True)
+    sort_time = time.time()
+
     for hit in hits[0:top_k]:
         print("\t{:.3f}\t{}".format(hit['cross-score'], passages[hit['corpus_id']]))
         results.append(passages[hit['corpus_id']])
+    
+    print("Predict time=", (predict_time-start_time), ", sort time = ", (sort_time-predict_time))
     return results, hits
