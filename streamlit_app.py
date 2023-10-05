@@ -1,6 +1,6 @@
 import streamlit as st
 
-from common import load_data, load_model, load_tokenized_data, search, download_files
+from common import load_data, load_model, load_tokenized_data, search, download_files, ranking
 
 @st.cache_resource()
 def download_data():
