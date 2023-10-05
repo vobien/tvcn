@@ -33,7 +33,11 @@ def run(model_names, model_mapping, top_k=10):
     # rankers.append("lexical-search-bm25")
     rankers.append("ensemble")
     ranker = st.sidebar.radio('Loại mô hình ngôn ngữ', rankers, index=0)
-    st.markdown('Các bạn có thể gõ câu hỏi tiếng việt có dấu nào ở trong ô bên dưới và bấm nút search để tra cứu sách của trưởng lão Thích Thông Lạc.')
+    st.markdown("Các bạn có thể nhập thắc mắc của mình bằng tiếng việt có dấu ở ô bên dưới và bấm nút search để tra cứu sách của trưởng lão Thích Thông Lạc." 
+     + "Kết quả tra cứu chính xác 100% là kinh sách của Trưởng Lão Thích Thông Lạc."
+     + "Vì trang web chỉ tìm kiếm thông tin gần đúng với những gì bạn nhập vào, cho nên bạn nên đọc qua các kết quả tìm được để chọn thông tin phù hợp nhất với bạn."
+     + "Bạn có thể lựa chọn các mô hình ngôn ngữ khác nhau để đa dạng kết quả tìm được."
+     + "Bạn cũng có thể đánh dấu chọn vào ô 'Ranking kết quả tìm kiếm' để thuật toán sắp xếp lại thứ tự kết quả phù hợp nhất.")
     st.text('')
     input_text = []
     comment = st.text_area('Vui lòng nhập câu hỏi tiếng việt có dấu ở đây!')
