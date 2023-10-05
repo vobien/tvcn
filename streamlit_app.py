@@ -58,9 +58,9 @@ def run(model_names, model_mapping, top_k=10):
 if __name__ == '__main__':
     model_names = [
         "keepitreal/vietnamese-sbert",
-        # "sentence-transformers/all-MiniLM-L12-v2",
+        "sentence-transformers/all-MiniLM-L12-v2",
         "sentence-transformers/multi-qa-mpnet-base-cos-v1",
-        "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+        # "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     ]
 
     download_data()
