@@ -2,3 +2,4 @@ sentence-transformers
 pyvi
 streamlit
 gdown
+rank_bm25

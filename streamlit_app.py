@@ -1,6 +1,7 @@
 import streamlit as st
 
 from common import load_data, load_model, load_tokenized_data, search, download_files, ranking
+from bm25 import lexical_search, load_bm25
 
 @st.cache_resource()
 def download_data():
@@ -22,16 +23,15 @@ def load_model_and_corpus(model_names):
     return model_mapping
 
 @st.cache_resource()
-def load_model_simcse_and_data():
-    # model SimCSE & tokenize
-    tokenized_passages = load_tokenized_data()
-    sim_sce, sim_sce_corpus_embeddings = load_model(tokenized_passages, model_name='VoVanPhuc/sup-SimCSE-VietNamese-phobert-base')
-    return sim_sce, sim_sce_corpus_embeddings
+def load_model_bm25():
+    return load_bm25(passages)
 
 
-def run(model_names, model_mapping, top_k=10):
+def run(model_names, model_mapping, bm25, top_k=10):
     st.title('Tìm kiếm theo ngữ nghĩa')
-    ranker = st.sidebar.radio('Loại mô hình ngôn ngữ', model_names, index=0)
+    rankers = model_names[:]
+    rankers.append("lexical-search-bm25")
+    ranker = st.sidebar.radio('Loại mô hình ngôn ngữ', rankers, index=0)
     st.markdown('Các bạn có thể gõ câu hỏi tiếng việt có dấu nào ở trong ô bên dưới và bấm nút search để tra cứu sách của trưởng lão Thích Thông Lạc.')
     st.text('')
     input_text = []
@@ -43,7 +43,9 @@ def run(model_names, model_mapping, top_k=10):
             if input_text != '':
                 print(f'Input: ', input_text)
                 query = input_text[0]
-                if ranker != '':
+                if ranker == 'lexical-search-bm25':
+                    results, _  = lexical_search(bm25, query, passages, top_k=top_k)
+                else:
                     print("Search answers with model ", ranker)
                     model = model_mapping[ranker]["model"]
                     corpus = model_mapping[ranker]["corpus"]
@@ -61,7 +63,8 @@ if __name__ == '__main__':
         "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     ]
 
-    download_data()
+    # download_data()
     passages = load_input_data()
     model_mapping = load_model_and_corpus(model_names)
-    run(model_names, model_mapping, top_k=10)
+    bm25 = load_model_bm25()
+    run(model_names, model_mapping, bm25, top_k=10)
