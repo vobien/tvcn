@@ -57,8 +57,6 @@ if __name__ == '__main__':
     model_names = [
         "keepitreal/vietnamese-sbert",
         "sentence-transformers/all-MiniLM-L12-v2",
-        "sentence-transformers/all-mpnet-base-v2",
-        "sentence-transformers/distiluse-base-multilingual-cased-v2",
         "sentence-transformers/multi-qa-mpnet-base-cos-v1",
         "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     ]
@@ -66,4 +64,4 @@ if __name__ == '__main__':
     download_data()
     passages = load_input_data()
     model_mapping = load_model_and_corpus(model_names)
-    run(model_names, model_mapping, top_k=100)
+    run(model_names, model_mapping, top_k=10)
