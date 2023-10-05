@@ -38,10 +38,10 @@ def run(top_k=10):
                 query = input_text[0]
                 if ranker == 'vietnamese-sbert':
                     results, hits = search(vi_sbert, vi_sbert_corpus_embeddings, query, passages, top_k=top_k)
-                    results, hits = ranking(hits, query, passages)
+                    # results, hits = ranking(hits, query, passages)
                 elif ranker == 'SimCSE':
                     results, hits = search(sim_sce, sim_sce_corpus_embeddings, query, passages, is_tokenize=True, top_k=top_k)
-                    results, hits = ranking(hits, query, passages)
+                    # results, hits = ranking(hits, query, passages)
 
                 for result in results:
                     st.success(f"{str(result)}")
