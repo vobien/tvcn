@@ -30,13 +30,15 @@ def load_model_bm25():
 def run(model_names, model_mapping, top_k=10):
     st.title('Tìm kiếm theo ngữ nghĩa')
     rankers = model_names[:]
-    # rankers.append("lexical-search-bm25")
+    rankers.append("lexical-search-bm25")
     ranker = st.sidebar.radio('Loại mô hình ngôn ngữ', rankers, index=0)
     st.markdown('Các bạn có thể gõ câu hỏi tiếng việt có dấu nào ở trong ô bên dưới và bấm nút search để tra cứu sách của trưởng lão Thích Thông Lạc.')
     st.text('')
     input_text = []
     comment = st.text_area('Vui lòng nhập câu hỏi tiếng việt có dấu ở đây!')
     input_text.append(comment)
+
+    is_ranking = st.checkbox("Ranking lại kết quả tìm kiếm")
 
     if st.button('Tìm kiếm'):
         with st.spinner('Searching ......'):
@@ -49,7 +51,10 @@ def run(model_names, model_mapping, top_k=10):
                     print("Search answers with model ", ranker)
                     model = model_mapping[ranker]["model"]
                     corpus = model_mapping[ranker]["corpus"]
-                    results, _ = search(model, corpus, query, passages, top_k=top_k)
+                    results, hits = search(model, corpus, query, passages, top_k=top_k)
+                    
+                    if is_ranking:
+                        results, _ = ranking(hits, query, passages, top_k=top_k)
 
                 for result in results:
                     st.success(f"{str(result)}")
@@ -66,5 +71,5 @@ if __name__ == '__main__':
     download_data()
     passages = load_input_data()
     model_mapping = load_model_and_corpus(model_names)
-    # bm25 = load_model_bm25()
+    bm25 = load_model_bm25()
     run(model_names, model_mapping, top_k=10)
