@@ -7,7 +7,7 @@ import json
 import gdown
 
 def download_files(url="https://drive.google.com/drive/folders/1Ial6KkjHfYdkU30SZRibfSifgnRl-myA"):
-    gdown.download_folder(url, quiet=True, use_cookies=False)
+    gdown.download_folder(url, quiet=False, use_cookies=False)
 
 def load_data(data_file='es-exported-index.json', 
                 passages_file='es-passages.json',
