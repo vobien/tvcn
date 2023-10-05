@@ -30,7 +30,7 @@ def load_model_bm25():
 def run(model_names, model_mapping, top_k=10):
     st.title('Tìm kiếm theo ngữ nghĩa')
     rankers = model_names[:]
-    rankers.append("lexical-search-bm25")
+    # rankers.append("lexical-search-bm25")
     rankers.append("ensemble")
     ranker = st.sidebar.radio('Loại mô hình ngôn ngữ', rankers, index=0)
     st.markdown("Các bạn có thể nhập thắc mắc của mình bằng tiếng việt có dấu ở ô bên dưới và bấm nút search để tra cứu sách của trưởng lão Thích Thông Lạc." 
@@ -96,5 +96,5 @@ if __name__ == '__main__':
     download_data()
     passages = load_input_data()
     model_mapping = load_model_and_corpus(model_names)
-    bm25 = load_model_bm25()
+    # bm25 = load_model_bm25()
     run(model_names, model_mapping, top_k=10)
